@@ -86,9 +86,9 @@ class CatTinderScreenState extends State<CatTinderScreen> {
                       onTap: () => _showCatDetails(cat),
                       onHorizontalDragEnd: (details) {
                         if (details.primaryVelocity! > 0) {
-                          _onDislike();
-                        } else if (details.primaryVelocity! < 0) {
                           _onLike();
+                        } else if (details.primaryVelocity! < 0) {
+                          _onDislike();
                         }
                       },
                       child: CachedNetworkImage(
