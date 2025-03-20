@@ -32,7 +32,10 @@ class CatDetailScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('Средний вес: ${cat.weight} кг; Продолжительность жизни: ${cat.lifeSpan} лет;', style: const TextStyle(fontSize: 18)),
+            Text(
+              'Средний вес: ${cat.weight} кг; Продолжительность жизни: ${cat.lifeSpan} лет;',
+              style: const TextStyle(fontSize: 18),
+            ),
           ],
         ),
       ),

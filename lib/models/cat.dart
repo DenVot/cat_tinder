@@ -6,7 +6,14 @@ class Cat {
   final String height;
   final String lifeSpan;
 
-  Cat({required this.id, required this.url, required this.breedName, required this.weight, required this.height, required this.lifeSpan});
+  Cat({
+    required this.id,
+    required this.url,
+    required this.breedName,
+    required this.weight,
+    required this.height,
+    required this.lifeSpan,
+  });
 
   factory Cat.fromJson(Map<String, dynamic> json) {
     return Cat(
@@ -16,13 +23,16 @@ class Cat {
           json['breeds'] != null && json['breeds'].isNotEmpty
               ? json['breeds'][0]['name']
               : 'Unknown',
-      weight: json['breeds'] != null && json['breeds'].isNotEmpty
+      weight:
+          json['breeds'] != null && json['breeds'].isNotEmpty
               ? json['breeds'][0]['weight']["imperial"]
               : 'Unknown',
-      height: json['breeds'] != null && json['breeds'].isNotEmpty
+      height:
+          json['breeds'] != null && json['breeds'].isNotEmpty
               ? json['breeds'][0]['height'].toString()
               : 'Unknown',
-      lifeSpan: json['breeds'] != null && json['breeds'].isNotEmpty
+      lifeSpan:
+          json['breeds'] != null && json['breeds'].isNotEmpty
               ? json['breeds'][0]['life_span'].toString()
               : 'Unknown',
     );
