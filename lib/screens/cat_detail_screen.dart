@@ -33,7 +33,6 @@ class CatDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text('ID: ${cat.id}', style: const TextStyle(fontSize: 18)),
-            // Здесь можно добавить больше информации о породе, если нужно
           ],
         ),
       ),
