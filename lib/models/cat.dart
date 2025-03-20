@@ -17,13 +17,13 @@ class Cat {
               ? json['breeds'][0]['name']
               : 'Unknown',
       weight: json['breeds'] != null && json['breeds'].isNotEmpty
-              ? json['breeds'][0]['weight']
+              ? json['breeds'][0]['weight']["imperial"]
               : 'Unknown',
       height: json['breeds'] != null && json['breeds'].isNotEmpty
-              ? json['breeds'][0]['height']
+              ? json['breeds'][0]['height'].toString()
               : 'Unknown',
       lifeSpan: json['breeds'] != null && json['breeds'].isNotEmpty
-              ? json['breeds'][0]['life_span']
+              ? json['breeds'][0]['life_span'].toString()
               : 'Unknown',
     );
   }
