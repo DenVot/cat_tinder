@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'services/cat_service.dart';
 import 'models/cat.dart';
-import 'screens/cat_detail_screen.dart'; // Импортируем новый экран
+import 'screens/cat_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
