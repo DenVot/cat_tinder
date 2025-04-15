@@ -15,10 +15,7 @@ class LikedCatsScreen extends StatelessWidget {
     final catState = Provider.of<CatState>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Лайкнутые котики'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Лайкнутые котики'), centerTitle: true),
       body: Column(
         children: [
           Padding(
@@ -26,12 +23,13 @@ class LikedCatsScreen extends StatelessWidget {
             child: DropdownButton<String>(
               value: catState.selectedBreed,
               hint: const Text('Выберите породу'),
-              items: catState.uniqueBreeds.map((breed) {
-                return DropdownMenuItem<String>(
-                  value: breed,
-                  child: Text(breed),
-                );
-              }).toList(),
+              items:
+                  catState.uniqueBreeds.map((breed) {
+                    return DropdownMenuItem<String>(
+                      value: breed,
+                      child: Text(breed),
+                    );
+                  }).toList(),
               onChanged: (value) {
                 catState.setSelectedBreed(value);
               },
@@ -42,9 +40,10 @@ class LikedCatsScreen extends StatelessWidget {
               itemCount: catState.filteredCats.length,
               itemBuilder: (context, index) {
                 final cat = catState.filteredCats[index];
-                final formattedDate = cat.likedAt != null
-                    ? _formatDate(cat.likedAt!)
-                    : 'Неизвестно';
+                final formattedDate =
+                    cat.likedAt != null
+                        ? _formatDate(cat.likedAt!)
+                        : 'Неизвестно';
                 return ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                   leading: SizedBox(
@@ -52,8 +51,14 @@ class LikedCatsScreen extends StatelessWidget {
                     height: 50,
                     child: CachedNetworkImage(
                       imageUrl: cat.url,
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error, size: 40, color: Colors.grey),
+                      placeholder:
+                          (context, url) => const CircularProgressIndicator(),
+                      errorWidget:
+                          (context, url, error) => const Icon(
+                            Icons.error,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
                       fit: BoxFit.cover,
                     ),
                   ),

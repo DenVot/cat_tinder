@@ -123,8 +123,10 @@ class CatTinderScreenState extends State<CatTinderScreen> {
                       },
                       child: CachedNetworkImage(
                         imageUrl: cat.url,
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        placeholder:
+                            (context, url) => const CircularProgressIndicator(),
+                        errorWidget:
+                            (context, url, error) => const Icon(Icons.error),
                         fit: BoxFit.cover,
                       ),
                     );
@@ -143,12 +145,15 @@ class CatTinderScreenState extends State<CatTinderScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 LikeButton(onTap: _onDislike, icon: Icons.close),
-                LikeButton(onTap: () async {
-                  if (_catLoaded) {
-                    final cat = await _catFuture;
-                    _onLike(cat);
-                  }
-                }, icon: Icons.favorite),
+                LikeButton(
+                  onTap: () async {
+                    if (_catLoaded) {
+                      final cat = await _catFuture;
+                      _onLike(cat);
+                    }
+                  },
+                  icon: Icons.favorite,
+                ),
               ],
             ),
           ],

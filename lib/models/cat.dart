@@ -21,18 +21,22 @@ class Cat {
     return Cat(
       id: json['id'],
       url: json['url'],
-      breedName: json['breeds'] != null && json['breeds'].isNotEmpty
-          ? json['breeds'][0]['name']
-          : 'Unknown',
-      weight: json['breeds'] != null && json['breeds'].isNotEmpty
-          ? json['breeds'][0]['weight']["imperial"]
-          : 'Unknown',
-      height: json['breeds'] != null && json['breeds'].isNotEmpty
-          ? json['breeds'][0]['height'].toString()
-          : 'Unknown',
-      lifeSpan: json['breeds'] != null && json['breeds'].isNotEmpty
-          ? json['breeds'][0]['life_span'].toString()
-          : 'Unknown',
+      breedName:
+          json['breeds'] != null && json['breeds'].isNotEmpty
+              ? json['breeds'][0]['name']
+              : 'Unknown',
+      weight:
+          json['breeds'] != null && json['breeds'].isNotEmpty
+              ? json['breeds'][0]['weight']["imperial"]
+              : 'Unknown',
+      height:
+          json['breeds'] != null && json['breeds'].isNotEmpty
+              ? json['breeds'][0]['height'].toString()
+              : 'Unknown',
+      lifeSpan:
+          json['breeds'] != null && json['breeds'].isNotEmpty
+              ? json['breeds'][0]['life_span'].toString()
+              : 'Unknown',
     );
   }
 
