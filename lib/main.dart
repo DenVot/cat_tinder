@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get_it/get_it.dart';
 import 'services/cat_service.dart';
 import 'models/cat.dart';
 import 'screens/cat_detail_screen.dart';
+import 'screens/liked_cats_screen.dart';
+import 'package:provider/provider.dart';
 import 'buttons/like_button.dart';
+import 'states/cat_state.dart';
+import 'dep_inj.dart';
 
 void main() {
-  runApp(const MyApp());
+  setupDeps();
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => GetIt.instance<CatState>(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,24 +42,26 @@ class CatTinderScreen extends StatefulWidget {
 
 class CatTinderScreenState extends State<CatTinderScreen> {
   late Future<Cat> _catFuture;
-  int _likeCount = 0;
+  bool _catLoaded = false;
+  final CatService _catService = GetIt.instance<CatService>();
 
   @override
   void initState() {
     super.initState();
-    _catFuture = CatService().getRandomCat();
+    _catFuture = _catService.getRandomCat();
+    _catFuture.whenComplete(() => _catLoaded = true);
   }
 
   void _loadNewCat() {
     setState(() {
-      _catFuture = CatService().getRandomCat();
+      _catFuture = _catService.getRandomCat();
+      _catFuture.whenComplete(() => _catLoaded = true);
     });
   }
 
-  void _onLike() {
-    setState(() {
-      _likeCount++;
-    });
+  void _onLike(Cat cat) {
+    final catState = Provider.of<CatState>(context, listen: false);
+    catState.addLikedCat(cat);
     _loadNewCat();
   }
 
@@ -63,10 +76,26 @@ class CatTinderScreenState extends State<CatTinderScreen> {
     );
   }
 
+  void _openLikedCatsScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LikedCatsScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Кототиндер'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Кототиндер'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: _openLikedCatsScreen,
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -87,17 +116,15 @@ class CatTinderScreenState extends State<CatTinderScreen> {
                       onTap: () => _showCatDetails(cat),
                       onHorizontalDragEnd: (details) {
                         if (details.primaryVelocity! > 0) {
-                          _onLike();
+                          _onLike(cat);
                         } else if (details.primaryVelocity! < 0) {
                           _onDislike();
                         }
                       },
                       child: CachedNetworkImage(
                         imageUrl: cat.url,
-                        placeholder:
-                            (context, url) => const CircularProgressIndicator(),
-                        errorWidget:
-                            (context, url, error) => const Icon(Icons.error),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                         fit: BoxFit.cover,
                       ),
                     );
@@ -108,7 +135,7 @@ class CatTinderScreenState extends State<CatTinderScreen> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Лайков: $_likeCount',
+                'Лайков: ${Provider.of<CatState>(context).likedCats.length}',
                 style: const TextStyle(fontSize: 24),
               ),
             ),
@@ -116,7 +143,12 @@ class CatTinderScreenState extends State<CatTinderScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 LikeButton(onTap: _onDislike, icon: Icons.close),
-                LikeButton(onTap: _onLike, icon: Icons.favorite),
+                LikeButton(onTap: () async {
+                  if (_catLoaded) {
+                    final cat = await _catFuture;
+                    _onLike(cat);
+                  }
+                }, icon: Icons.favorite),
               ],
             ),
           ],
