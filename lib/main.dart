@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get_it/get_it.dart';
@@ -9,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'buttons/like_button.dart';
 import 'states/cat_state.dart';
 import 'dep_inj.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'utils/network_checker.dart';
 
 void main() {
   setupDeps();
@@ -44,12 +48,28 @@ class CatTinderScreenState extends State<CatTinderScreen> {
   late Future<Cat> _catFuture;
   bool _catLoaded = false;
   final CatService _catService = GetIt.instance<CatService>();
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
     _catFuture = _catService.getRandomCat();
     _catFuture.whenComplete(() => _catLoaded = true);
+
+    _connectivitySubscription = Connectivity()
+          .onConnectivityChanged
+          .listen((ConnectivityResult result) {
+            if (mounted) {
+              final isConnected = result != ConnectivityResult.none;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(isConnected ? 'Соединение восстановлено' : 'Нет интернета'),
+                  backgroundColor: isConnected ? Colors.green : Colors.red,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
+          });
   }
 
   void _loadNewCat() {
@@ -81,6 +101,12 @@ class CatTinderScreenState extends State<CatTinderScreen> {
       context,
       MaterialPageRoute(builder: (context) => const LikedCatsScreen()),
     );
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription?.cancel(); // Не забываем отписаться
+    super.dispose();
   }
 
   @override

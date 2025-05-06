@@ -40,6 +40,18 @@ class Cat {
     );
   }
 
+  factory Cat.fromJsonSharedPrefences(Map<String, dynamic> json) {
+    return Cat(
+      id: json['id'],
+      url: json['url'],
+      breedName: json['breedName'],
+      weight: json['weight'],
+      height: json['height'],
+      lifeSpan: json['lifeSpan'],
+      likedAt: DateTime.parse(json['likedAt'] as String)
+    );
+  }
+
   Cat copyWith({DateTime? likedAt}) {
     return Cat(
       id: id,
@@ -50,5 +62,17 @@ class Cat {
       lifeSpan: lifeSpan,
       likedAt: likedAt ?? this.likedAt,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'url': url,
+      'breedName': breedName,
+      'weight': weight,
+      'height': height,
+      'lifeSpan': lifeSpan,
+      'likedAt': likedAt!.toIso8601String(),
+    };
   }
 }

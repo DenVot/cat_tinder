@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:cat_tinder/core/cat_service_interface.dart';
 import 'package:http/http.dart' as http;
 import '../models/cat.dart';
 
-class CatService {
+class CatService extends CatServiceInterface {
   static const String _baseUrl =
       'https://api.thecatapi.com/v1/images/search?has_breeds=1&limit=1';
 

@@ -1,16 +1,25 @@
 import '../models/cat.dart';
+import '../core/shared_preferences_manager_interface.dart';
 
 class LikeManager {
-  final List<Cat> _likedCats = [];
+  final SharedPreferencesManagerInterface _prefs;
 
-  List<Cat> get likedCats => List.unmodifiable(_likedCats);
+  LikeManager(this._prefs);
 
-  void addLikedCat(Cat cat) {
+  Future<void> addLikedCat(Cat cat) async {
     final likedCat = cat.copyWith(likedAt: DateTime.now());
-    _likedCats.add(likedCat);
+    final currentList = await _prefs.getLikedCats();
+    final newList = [...currentList, likedCat];
+    await _prefs.saveLikedCats(newList);
   }
 
-  void removeLikedCat(Cat cat) {
-    _likedCats.remove(cat);
+  Future<void> removeLikedCat(Cat cat) async {
+    final currentList = await _prefs.getLikedCats();
+    final newList = currentList.where((c) => c.id != cat.id).toList();
+    await _prefs.saveLikedCats(newList);
+  }
+
+  Future<List<Cat>> getLikedCats() async {
+    return await _prefs.getLikedCats();
   }
 }

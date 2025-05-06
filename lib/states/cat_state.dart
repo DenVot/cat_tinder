@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import '../models/cat.dart';
+import '../services/like_manager.dart';
 
 class CatState with ChangeNotifier {
-  final List<Cat> _likedCats = [];
+  final LikeManager _likeManager;
+
+  CatState(this._likeManager);
+
+  List<Cat> _likedCats = [];
   String? _selectedBreed;
 
   List<Cat> get likedCats => List.unmodifiable(_likedCats);
+
   String? get selectedBreed => _selectedBreed;
 
-  void addLikedCat(Cat cat) {
-    final likedCat = cat.copyWith(likedAt: DateTime.now());
-    _likedCats.add(likedCat);
+  Future<void> loadInitialData() async {
+    _likedCats = await _likeManager.getLikedCats();
     notifyListeners();
   }
 
-  void removeLikedCat(Cat cat) {
-    _likedCats.remove(cat);
-    notifyListeners();
+  Future<void> addLikedCat(Cat cat) {
+    return _likeManager.addLikedCat(cat).whenComplete(loadInitialData);
+  }
+
+  Future<void> removeLikedCat(Cat cat) {
+    return _likeManager.removeLikedCat(cat).whenComplete(loadInitialData);
   }
 
   void setSelectedBreed(String? breed) {
