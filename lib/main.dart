@@ -47,7 +47,7 @@ class CatTinderScreenState extends State<CatTinderScreen> {
   late Future<Cat> _catFuture;
   bool _catLoaded = false;
   final CatService _catService = GetIt.instance<CatService>();
-  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
   void initState() {
@@ -56,10 +56,10 @@ class CatTinderScreenState extends State<CatTinderScreen> {
     _catFuture.whenComplete(() => _catLoaded = true);
 
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
-      ConnectivityResult result,
+      List<ConnectivityResult> result,
     ) {
       if (mounted) {
-        final isConnected = result != ConnectivityResult.none;
+        final isConnected = result[0] != ConnectivityResult.none;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
