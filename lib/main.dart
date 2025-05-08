@@ -4,7 +4,6 @@ import 'package:cat_tinder/core/cat_service_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get_it/get_it.dart';
-import 'services/cat_service.dart';
 import 'models/cat.dart';
 import 'screens/cat_detail_screen.dart';
 import 'screens/liked_cats_screen.dart';
@@ -107,7 +106,7 @@ class CatTinderScreenState extends State<CatTinderScreen> {
 
   @override
   void dispose() {
-    _connectivitySubscription?.cancel(); // Не забываем отписаться
+    _connectivitySubscription?.cancel();
     super.dispose();
   }
 

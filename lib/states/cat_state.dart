@@ -15,8 +15,9 @@ class CatState with ChangeNotifier {
   String? get selectedBreed => _selectedBreed;
 
   Future<void> loadInitialData() async {
-    _likedCats = await _likeManager.getLikedCats();
-    notifyListeners();
+    _likedCats = await _likeManager.getLikedCats().whenComplete(() {
+      notifyListeners();
+    });
   }
 
   Future<void> addLikedCat(Cat cat) {
