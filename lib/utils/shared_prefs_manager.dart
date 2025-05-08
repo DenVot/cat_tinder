@@ -6,12 +6,14 @@ import '../../models/cat.dart';
 class SharedPreferencesManager implements SharedPreferencesManagerInterface {
   static const String _likedCatsKey = 'liked_cats';
 
+  @override
   Future<void> saveLikedCats(List<Cat> cats) async {
     final prefs = await SharedPreferences.getInstance();
     final jsonList = cats.map((cat) => cat.toJson()).toList();
     prefs.setString(_likedCatsKey, jsonEncode(jsonList));
   }
 
+  @override
   Future<List<Cat>> getLikedCats() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(_likedCatsKey);

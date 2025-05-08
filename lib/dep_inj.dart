@@ -11,7 +11,8 @@ final GetIt deps = GetIt.instance;
 void setupDeps() {
   deps.registerLazySingleton<CatServiceInterface>(() => CatService());
   deps.registerFactory<SharedPreferencesManagerInterface>(
-      () => SharedPreferencesManager());
+    () => SharedPreferencesManager(),
+  );
   deps.registerFactory<CatState>(() {
     final likeManager = LikeManager(deps<SharedPreferencesManagerInterface>());
     return CatState(likeManager);

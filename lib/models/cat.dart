@@ -48,7 +48,7 @@ class Cat {
       weight: json['weight'],
       height: json['height'],
       lifeSpan: json['lifeSpan'],
-      likedAt: DateTime.parse(json['likedAt'] as String)
+      likedAt: DateTime.parse(json['likedAt'] as String),
     );
   }
 

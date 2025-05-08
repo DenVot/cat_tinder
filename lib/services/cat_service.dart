@@ -7,6 +7,7 @@ class CatService extends CatServiceInterface {
   static const String _baseUrl =
       'https://api.thecatapi.com/v1/images/search?has_breeds=1&limit=1';
 
+  @override
   Future<Cat> getRandomCat() async {
     final response = await http.get(
       Uri.parse(_baseUrl),

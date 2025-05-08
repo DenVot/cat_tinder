@@ -12,7 +12,6 @@ import 'buttons/like_button.dart';
 import 'states/cat_state.dart';
 import 'dep_inj.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'utils/network_checker.dart';
 
 void main() {
   setupDeps();
@@ -56,20 +55,22 @@ class CatTinderScreenState extends State<CatTinderScreen> {
     _catFuture = _catService.getRandomCat();
     _catFuture.whenComplete(() => _catLoaded = true);
 
-    _connectivitySubscription = Connectivity()
-          .onConnectivityChanged
-          .listen((ConnectivityResult result) {
-            if (mounted) {
-              final isConnected = result != ConnectivityResult.none;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(isConnected ? 'Соединение восстановлено' : 'Нет интернета'),
-                  backgroundColor: isConnected ? Colors.green : Colors.red,
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            }
-          });
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      ConnectivityResult result,
+    ) {
+      if (mounted) {
+        final isConnected = result != ConnectivityResult.none;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isConnected ? 'Соединение восстановлено' : 'Нет интернета',
+            ),
+            backgroundColor: isConnected ? Colors.green : Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    });
   }
 
   void _loadNewCat() {
