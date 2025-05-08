@@ -163,9 +163,23 @@ class CatTinderScreenState extends State<CatTinderScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Лайков: ${Provider.of<CatState>(context).likedCats.length}',
-                style: const TextStyle(fontSize: 24),
+              child:
+              FutureBuilder<List<Cat>>(
+                future: Provider.of<CatState>(context).loadLikedCats(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Ошибка: ${snapshot.error}');
+                  } else if (!snapshot.hasData) {
+                    return const Text('Нет лайкнутых котиков');
+                  } else {
+                    return Text(
+                      'Лайков: ${snapshot.data!.length}',
+                      style: const TextStyle(fontSize: 24),
+                    );
+                  }
+                },
               ),
             ),
             Row(

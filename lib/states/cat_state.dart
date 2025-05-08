@@ -20,6 +20,10 @@ class CatState with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Cat>> loadLikedCats() {
+    return _likeManager.getLikedCats();
+  }
+
   Future<void> addLikedCat(Cat cat) {
     return _likeManager.addLikedCat(cat).whenComplete(loadInitialData);
   }
