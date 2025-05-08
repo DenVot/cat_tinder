@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cat_tinder/core/cat_service_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get_it/get_it.dart';
@@ -46,7 +47,7 @@ class CatTinderScreen extends StatefulWidget {
 class CatTinderScreenState extends State<CatTinderScreen> {
   late Future<Cat> _catFuture;
   bool _catLoaded = false;
-  final CatService _catService = GetIt.instance<CatService>();
+  final CatServiceInterface _catService = GetIt.instance<CatServiceInterface>();
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
